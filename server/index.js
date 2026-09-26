@@ -475,6 +475,22 @@ connectMongo().catch(err => {
   console.error('[MongoDB] Initial connection error:', err);
 });
 
+// Serve public files (uploads, resume.pdf)
+const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+if (fs.existsSync(PUBLIC_DIR)) {
+  app.use(express.static(PUBLIC_DIR));
+}
+
+// Serve production frontend build (dist) and SPA fallback
+const DIST_PATH = path.join(__dirname, '..', 'dist');
+if (fs.existsSync(DIST_PATH)) {
+  app.use(express.static(DIST_PATH));
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api/')) return next();
+    res.sendFile(path.join(DIST_PATH, 'index.html'));
+  });
+}
+
 // Server listener
 app.listen(PORT, () => {
   console.log(`[API Server] Running on http://localhost:${PORT}`);
