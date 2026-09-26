@@ -1,0 +1,152 @@
+{
+  "resume": {
+    "activeResumeUrl": "/resume.pdf",
+    "filename": "Shivam_Verma_Resume.pdf",
+    "updatedAt": "2026-09-26T17:48:00.000Z"
+  },
+  "settings": {
+    "email": "csshivamverma54@gmail.com",
+    "github": "https://github.com/csshivamverma54",
+    "linkedin": "https://linkedin.com/in/shivamverma54",
+    "twitter": "",
+    "availabilityStatus": "Available for Q4 Projects",
+    "availabilityLocation": "Remote Worldwide • Contract or Full-Time"
+  },
+  "about": {
+    "heading": "Building Intelligent Solutions with Data  & AI",
+    "subheading": "Computer Science Student • AI/ML Enthusiast • Data Science Learner ",
+    "bioTitle": "Turning Curiosity into Intelligent Solutions",
+    "bioParagraph1": "I’m a Computer Science student passionate about Artificial Intelligence, Machine Learning, and Data Science. I enjoy learning how technology works behind the scenes and turning what I learn into practical projects that solve real-world problems.",
+    "bioParagraph2": "My journey is focused on building strong foundations in Python, SQL, machine learning, data analytics, and modern development tools while continuously exploring new technologies. I believe in learning by building, experimenting, and improving with every project.",
+    "metrics": [
+      {
+        "num": "5+",
+        "label": "Years of Craft"
+      },
+      {
+        "num": "10M+",
+        "label": "Daily Events"
+      },
+      {
+        "num": "60",
+        "label": "FPS Guarantee"
+      }
+    ],
+    "highlights": [
+      {
+        "title": "60 FPS Ultra-Fluid Web Performance",
+        "desc": "Obsessed with sub-frame render times, memory optimization, and physics-driven interactive web craft."
+      },
+      {
+        "title": "Resilient Cloud & Distributed Architecture",
+        "desc": "Proven experience designing fault-tolerant backend microservices and streaming millions of events."
+      },
+      {
+        "title": "Pixel-Perfect Luxury Interface Design",
+        "desc": "Harmonizing sleek typography, tactile micro-interactions, and accessible glassmorphism standards."
+      }
+    ],
+    "skillCategories": [
+      {
+        "category": "Frontend & Creative",
+        "skills": [
+          "React",
+          "Next.js",
+          "TypeScript",
+          "HTML5 Canvas API",
+          "WebGL & Three.js",
+          "Tailwind CSS",
+          "CSS Architecture"
+        ]
+      },
+      {
+        "category": "Backend & Systems",
+        "skills": [
+          "Node.js",
+          "Python",
+          "Go",
+          "PostgreSQL",
+          "Redis",
+          "GraphQL",
+          "RESTful APIs",
+          "Microservices"
+        ]
+      },
+      {
+        "category": "DevOps & Tooling",
+        "skills": [
+          "Docker",
+          "AWS / Cloudflare",
+          "CI/CD Pipelines",
+          "OpenCV / Media Processing",
+          "Vite / Webpack",
+          "Git"
+        ]
+      }
+    ]
+  },
+  "projects": [
+    {
+      "id": "canvas-engine",
+      "title": "Zero-Lag Canvas Interaction Engine",
+      "category": "Creative Web & Canvas Engine",
+      "description": "A bespoke 60 FPS angular cursor tracking engine with zero ghosting and shortest-path circular interpolation. Pre-extracts 64 synchronized WebP frames for instantaneous 35ms response time.",
+      "tags": [
+        "React",
+        "HTML5 Canvas",
+        "OpenCV",
+        "WebP",
+        "Math / Trigonometry"
+      ],
+      "previewType": "canvas",
+      "link": "https://github.com",
+      "github": "https://github.com",
+      "status": "Live on this page",
+      "featured": true,
+      "sortOrder": 1
+    },
+    {
+      "id": "nexus-design",
+      "title": "Nexus Enterprise Design System",
+      "category": "Design Systems & Frontend",
+      "description": "An enterprise-grade component library featuring glassmorphic depth, spring physics animations, WCAG AAA accessibility, and automated token synchronization.",
+      "tags": [
+        "TypeScript",
+        "React",
+        "Tailwind CSS",
+        "Framer Motion",
+        "Storybook"
+      ],
+      "previewType": "ui",
+      "link": "https://github.com",
+      "github": "https://github.com",
+      "status": "Open Source",
+      "featured": false,
+      "sortOrder": 3
+    },
+    {
+      "id": "omnisearch-ai",
+      "title": "OmniSearch Semantic Vector Index",
+      "category": "Full Stack & AI Systems",
+      "description": "Multi-modal search engine combining dense vector embeddings with inverted indexes to deliver sub-second semantic retrieval across vast documentation repositories.",
+      "tags": [
+        "Python",
+        "FastAPI",
+        "FAISS",
+        "Embeddings",
+        "Next.js",
+        "Tailwind"
+      ],
+      "previewType": "search",
+      "link": "https://github.com",
+      "github": "https://github.com",
+      "status": "Case Study",
+      "featured": false,
+      "sortOrder": 4
+    }
+  ],
+  "admin": {
+    "email": "admin@portfolio.dev",
+    "passwordHash": "$2b$10$/6Rbo7RMoFnX8rjJz7u17ucLv/wALoktZY.am20HYLY8kvPKRvma6"
+  }
+}

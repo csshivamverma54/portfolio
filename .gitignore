@@ -1,0 +1,21 @@
+# Environment Variables (Admin credentials)
+.env
+.env.*
+.env.local
+
+# Node dependencies
+node_modules/
+
+# Production build output
+dist/
+
+# Scratch & temporary logs
+scratch/
+*.log
+*.tmp
+file_*.png
+Interactive_character_animation_*.mp4
+
+# Uploads directory
+public/uploads/*
+!public/uploads/.gitkeep
