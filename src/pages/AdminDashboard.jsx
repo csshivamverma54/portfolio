@@ -57,7 +57,30 @@ export default function AdminDashboard() {
     if (portfolioData) {
       if (portfolioData.projects) setProjects(portfolioData.projects);
       if (portfolioData.about) {
-        setAboutForm(portfolioData.about);
+        setAboutForm({
+          ...portfolioData.about,
+          heroBio: portfolioData.about.heroBio || "Full Stack Engineer crafting bespoke digital interfaces, high-throughput backend architectures, and fluid interactive web experiences.",
+          principlesTitle: portfolioData.about.principlesTitle || "Core Engineering Principles",
+          metrics: portfolioData.about.metrics || [
+            { num: "5+", label: "Years of Craft" },
+            { num: "10M+", label: "Daily Events" },
+            { num: "60", label: "FPS Guarantee" }
+          ],
+          highlights: portfolioData.about.highlights || [
+            {
+              title: "60 FPS Ultra-Fluid Web Performance",
+              desc: "Obsessed with sub-frame render times, memory optimization, and physics-driven interactive web craft."
+            },
+            {
+              title: "Resilient Cloud & Distributed Architecture",
+              desc: "Proven experience designing fault-tolerant backend microservices and streaming millions of events."
+            },
+            {
+              title: "Pixel-Perfect Luxury Interface Design",
+              desc: "Harmonizing sleek typography, tactile micro-interactions, and accessible glassmorphism standards."
+            }
+          ]
+        });
         if (portfolioData.about.skillCategories) {
           setSkillCategories(portfolioData.about.skillCategories);
         }
@@ -189,12 +212,67 @@ export default function AdminDashboard() {
         })
       });
 
-      if (!res.ok) throw new Error('Failed to update About section');
+      if (!res.ok) throw new Error('Failed to update About & Hero section');
       await refetchPortfolio();
-      showToast('About section updated successfully!');
+      showToast('About & Hero content updated successfully!');
     } catch (err) {
       showToast(err.message, 'error');
     }
+  };
+
+  const handleMetricChange = (index, field, value) => {
+    const updated = [...(aboutForm?.metrics || [])];
+    updated[index] = { ...updated[index], [field]: value };
+    setAboutForm({ ...aboutForm, metrics: updated });
+  };
+
+  const handleAddMetric = () => {
+    const updated = [...(aboutForm?.metrics || []), { num: '100+', label: 'New Metric' }];
+    setAboutForm({ ...aboutForm, metrics: updated });
+  };
+
+  const handleDeleteMetric = (index) => {
+    const updated = (aboutForm?.metrics || []).filter((_, idx) => idx !== index);
+    setAboutForm({ ...aboutForm, metrics: updated });
+  };
+
+  const handleMoveMetric = (index, direction) => {
+    const list = [...(aboutForm?.metrics || [])];
+    const target = index + direction;
+    if (target < 0 || target >= list.length) return;
+    const temp = list[index];
+    list[index] = list[target];
+    list[target] = temp;
+    setAboutForm({ ...aboutForm, metrics: list });
+  };
+
+  const handleHighlightChange = (index, field, value) => {
+    const updated = [...(aboutForm?.highlights || [])];
+    updated[index] = { ...updated[index], [field]: value };
+    setAboutForm({ ...aboutForm, highlights: updated });
+  };
+
+  const handleAddHighlight = () => {
+    const updated = [
+      ...(aboutForm?.highlights || []),
+      { title: 'New Core Principle', desc: 'Describe this principle or highlight.' }
+    ];
+    setAboutForm({ ...aboutForm, highlights: updated });
+  };
+
+  const handleDeleteHighlight = (index) => {
+    const updated = (aboutForm?.highlights || []).filter((_, idx) => idx !== index);
+    setAboutForm({ ...aboutForm, highlights: updated });
+  };
+
+  const handleMoveHighlight = (index, direction) => {
+    const list = [...(aboutForm?.highlights || [])];
+    const target = index + direction;
+    if (target < 0 || target >= list.length) return;
+    const temp = list[index];
+    list[index] = list[target];
+    list[target] = temp;
+    setAboutForm({ ...aboutForm, highlights: list });
   };
 
   // ==========================================
@@ -582,7 +660,7 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab('about')}
           >
             <User size={18} />
-            <span>About Bio</span>
+            <span>About &amp; Hero</span>
           </button>
 
           <button
@@ -941,15 +1019,60 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Tab 3: ABOUT */}
+        {/* Tab 3: ABOUT & HERO */}
         {activeTab === 'about' && aboutForm && (
           <div className="tab-pane">
-            <form onSubmit={handleSaveAbout} className="cms-card">
-              <h3 className="cms-card-heading">About Section Content</h3>
+            {/* Hero Page Tagline CMS Card */}
+            <div className="cms-card" style={{ marginBottom: '1.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
+                <div>
+                  <h3 className="cms-card-heading">Hero Page Tagline &amp; Introduction</h3>
+                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', marginTop: '0.35rem' }}>
+                    This is the headline/bio text displayed on the bottom-left of the landing hero page directly under your name (previously "Full Stack Engineer crafting bespoke digital interfaces...").
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleSaveAbout}
+                  className="cms-btn-primary"
+                  style={{ whiteSpace: 'nowrap' }}
+                >
+                  <Save size={16} />
+                  <span>Save Tagline</span>
+                </button>
+              </div>
 
-              <div className="cms-form-grid" style={{ marginTop: '1.5rem' }}>
+              <div className="cms-input-group" style={{ marginTop: '1.25rem' }}>
+                <label className="cms-label">Hero Bio / Tagline (Bottom-Left Hero Area)</label>
+                <textarea
+                  rows={3}
+                  value={aboutForm.heroBio || ''}
+                  onChange={(e) => setAboutForm({ ...aboutForm, heroBio: e.target.value })}
+                  placeholder="Full Stack Engineer crafting bespoke digital interfaces, high-throughput backend architectures, and fluid interactive web experiences."
+                  className="cms-textarea"
+                />
+              </div>
+            </div>
+
+            {/* About Section Form */}
+            <form onSubmit={handleSaveAbout} className="cms-card">
+              <div className="cms-sub-header" style={{ marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '1rem' }}>
+                <div>
+                  <h3 className="cms-card-heading">About Section Content</h3>
+                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', marginTop: '0.25rem' }}>
+                    Configure the story, philosophy, metrics, and core principles displayed in the About section.
+                  </p>
+                </div>
+                <button type="submit" className="cms-btn-primary">
+                  <Save size={16} />
+                  <span>Save About Content</span>
+                </button>
+              </div>
+
+              {/* Headings */}
+              <div className="cms-form-grid" style={{ marginTop: '1rem' }}>
                 <div className="cms-input-group" style={{ gridColumn: 'span 2' }}>
-                  <label className="cms-label">Main Heading</label>
+                  <label className="cms-label">Section Tag / Main Heading</label>
                   <input
                     type="text"
                     value={aboutForm.heading || ''}
@@ -959,7 +1082,7 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="cms-input-group" style={{ gridColumn: 'span 2' }}>
-                  <label className="cms-label">Subheading</label>
+                  <label className="cms-label">Section Subheading</label>
                   <input
                     type="text"
                     value={aboutForm.subheading || ''}
@@ -969,12 +1092,13 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="cms-input-group" style={{ gridColumn: 'span 2' }}>
-                  <label className="cms-label">Bio Title</label>
+                  <label className="cms-label">Story Card Title (Left Card)</label>
                   <input
                     type="text"
                     value={aboutForm.bioTitle || ''}
                     onChange={(e) => setAboutForm({ ...aboutForm, bioTitle: e.target.value })}
                     className="cms-input"
+                    placeholder="Turning Curiosity into Intelligent Solutions"
                   />
                 </div>
 
@@ -999,10 +1123,199 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
+              {/* Left Card: Quick Metrics Editor */}
+              <div className="cms-sub-card">
+                <div className="cms-sub-header">
+                  <div>
+                    <h4 className="cms-sub-title">Quick Metric Counters</h4>
+                    <p className="cms-sub-desc">
+                      The key numbers shown at the bottom of the story card (e.g. 5+ Years of Craft, 10M+ Daily Events, 60 FPS Guarantee).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleAddMetric}
+                    className="cms-btn-secondary"
+                    style={{ fontSize: '0.82rem', padding: '0.45rem 0.9rem' }}
+                  >
+                    <Plus size={14} />
+                    <span>Add Metric</span>
+                  </button>
+                </div>
+
+                <div className="cms-items-list">
+                  {(aboutForm.metrics || []).map((m, mIdx) => (
+                    <div key={mIdx} className="cms-item-card">
+                      <div className="cms-item-header">
+                        <span className="cms-item-badge">Metric #{mIdx + 1}</span>
+                        <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+                          <button
+                            type="button"
+                            disabled={mIdx === 0}
+                            onClick={() => handleMoveMetric(mIdx, -1)}
+                            className="order-btn"
+                            title="Move Up"
+                          >
+                            <ArrowUp size={13} />
+                          </button>
+                          <button
+                            type="button"
+                            disabled={mIdx === (aboutForm.metrics.length - 1)}
+                            onClick={() => handleMoveMetric(mIdx, 1)}
+                            className="order-btn"
+                            title="Move Down"
+                          >
+                            <ArrowDown size={13} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteMetric(mIdx)}
+                            className="cms-icon-btn delete"
+                            title="Delete Metric"
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        </div>
+                      </div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '0.75rem' }}>
+                        <div>
+                          <label className="cms-label" style={{ fontSize: '0.75rem' }}>Value / Number</label>
+                          <input
+                            type="text"
+                            value={m.num || ''}
+                            onChange={(e) => handleMetricChange(mIdx, 'num', e.target.value)}
+                            placeholder="e.g. 5+"
+                            className="cms-input"
+                            style={{ fontSize: '0.88rem', padding: '0.55rem 0.75rem' }}
+                          />
+                        </div>
+                        <div>
+                          <label className="cms-label" style={{ fontSize: '0.75rem' }}>Metric Label</label>
+                          <input
+                            type="text"
+                            value={m.label || ''}
+                            onChange={(e) => handleMetricChange(mIdx, 'label', e.target.value)}
+                            placeholder="e.g. Years of Craft"
+                            className="cms-input"
+                            style={{ fontSize: '0.88rem', padding: '0.55rem 0.75rem' }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {(!aboutForm.metrics || aboutForm.metrics.length === 0) && (
+                    <p style={{ color: 'rgba(255,255,255,0.4)', fontStyle: 'italic', fontSize: '0.85rem' }}>
+                      No metrics added yet. Click "+ Add Metric" to create one.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Right Card: Core Engineering Principles Editor */}
+              <div className="cms-sub-card">
+                <div className="cms-sub-header">
+                  <div>
+                    <h4 className="cms-sub-title">Core Engineering Principles (Right Card)</h4>
+                    <p className="cms-sub-desc">
+                      Highlight pillars with titles and descriptions (e.g. 60 FPS Ultra-Fluid Web Performance, Resilient Cloud Architecture).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleAddHighlight}
+                    className="cms-btn-secondary"
+                    style={{ fontSize: '0.82rem', padding: '0.45rem 0.9rem' }}
+                  >
+                    <Plus size={14} />
+                    <span>Add Principle</span>
+                  </button>
+                </div>
+
+                <div className="cms-input-group" style={{ marginBottom: '1rem' }}>
+                  <label className="cms-label" style={{ fontSize: '0.78rem' }}>Section / Card Title</label>
+                  <input
+                    type="text"
+                    value={aboutForm.principlesTitle || ''}
+                    onChange={(e) => setAboutForm({ ...aboutForm, principlesTitle: e.target.value })}
+                    placeholder="Core Engineering Principles"
+                    className="cms-input"
+                    style={{ fontSize: '0.9rem', padding: '0.6rem 0.85rem' }}
+                  />
+                </div>
+
+                <div className="cms-items-list">
+                  {(aboutForm.highlights || []).map((hl, hlIdx) => (
+                    <div key={hlIdx} className="cms-item-card">
+                      <div className="cms-item-header">
+                        <span className="cms-item-badge">Principle #{hlIdx + 1}</span>
+                        <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+                          <button
+                            type="button"
+                            disabled={hlIdx === 0}
+                            onClick={() => handleMoveHighlight(hlIdx, -1)}
+                            className="order-btn"
+                            title="Move Up"
+                          >
+                            <ArrowUp size={13} />
+                          </button>
+                          <button
+                            type="button"
+                            disabled={hlIdx === (aboutForm.highlights.length - 1)}
+                            onClick={() => handleMoveHighlight(hlIdx, 1)}
+                            className="order-btn"
+                            title="Move Down"
+                          >
+                            <ArrowDown size={13} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteHighlight(hlIdx)}
+                            className="cms-icon-btn delete"
+                            title="Delete Principle"
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                        <div>
+                          <label className="cms-label" style={{ fontSize: '0.75rem' }}>Title</label>
+                          <input
+                            type="text"
+                            value={hl.title || ''}
+                            onChange={(e) => handleHighlightChange(hlIdx, 'title', e.target.value)}
+                            placeholder="e.g. 60 FPS Ultra-Fluid Web Performance"
+                            className="cms-input"
+                            style={{ fontSize: '0.88rem', padding: '0.55rem 0.75rem' }}
+                          />
+                        </div>
+                        <div>
+                          <label className="cms-label" style={{ fontSize: '0.75rem' }}>Description</label>
+                          <textarea
+                            rows={2}
+                            value={hl.desc || ''}
+                            onChange={(e) => handleHighlightChange(hlIdx, 'desc', e.target.value)}
+                            placeholder="Obsessed with sub-frame render times, memory optimization..."
+                            className="cms-textarea"
+                            style={{ fontSize: '0.85rem', padding: '0.55rem 0.75rem' }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {(!aboutForm.highlights || aboutForm.highlights.length === 0) && (
+                    <p style={{ color: 'rgba(255,255,255,0.4)', fontStyle: 'italic', fontSize: '0.85rem' }}>
+                      No principles added yet. Click "+ Add Principle" to create one.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
                 <button type="submit" className="cms-btn-primary">
                   <Save size={16} />
-                  <span>Save About Content</span>
+                  <span>Save All Changes</span>
                 </button>
               </div>
             </form>

@@ -93,7 +93,7 @@ export default function AboutSection() {
 
           {/* Right Column: Key Highlights */}
           <div className="about-highlights-card">
-            <h3 className="about-card-title">Core Engineering Principles</h3>
+            <h3 className="about-card-title">{about.principlesTitle || "Core Engineering Principles"}</h3>
             <div className="highlights-list">
               {(about.highlights || defaultAbout.highlights).map((hl, i) => (
                 <div key={i} className="highlight-item">

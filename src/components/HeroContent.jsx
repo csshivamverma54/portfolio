@@ -6,6 +6,7 @@ export default function HeroContent({ name = "Shivam Verma", onNavigate }) {
   const { portfolioData } = usePortfolio();
   const resumeUrl = portfolioData?.resume?.activeResumeUrl || '/resume.pdf';
   const resumeFilename = portfolioData?.resume?.filename || 'Shivam_Verma_Resume.pdf';
+  const heroBio = portfolioData?.about?.heroBio || "Full Stack Engineer crafting bespoke digital interfaces, high-throughput backend architectures, and fluid interactive web experiences.";
 
   const handleTalkClick = (e) => {
     e.preventDefault();
@@ -26,7 +27,7 @@ export default function HeroContent({ name = "Shivam Verma", onNavigate }) {
       </h1>
 
       <p className="bio-paragraph">
-        Full Stack Engineer crafting bespoke digital interfaces, high-throughput backend architectures, and fluid interactive web experiences.
+        {heroBio}
       </p>
 
       <div className="cta-group">

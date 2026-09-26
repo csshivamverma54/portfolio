@@ -26,6 +26,8 @@ const ProjectSchema = new mongoose.Schema({
 const AboutSchema = new mongoose.Schema({
   heading: String,
   subheading: String,
+  heroBio: String,
+  principlesTitle: String,
   bioTitle: String,
   bioParagraph1: String,
   bioParagraph2: String,
