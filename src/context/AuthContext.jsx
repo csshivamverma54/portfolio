@@ -23,8 +23,15 @@ export function AuthProvider({ children }) {
       });
 
       if (res.ok) {
-        const data = await res.json();
-        setUser(data.user);
+        const text = await res.text();
+        const data = text ? JSON.parse(text) : {};
+        if (data.user) {
+          setUser(data.user);
+        } else {
+          localStorage.removeItem('admin_token');
+          setToken(null);
+          setUser(null);
+        }
       } else {
         // Invalid or expired token
         localStorage.removeItem('admin_token');
@@ -46,15 +53,30 @@ export function AuthProvider({ children }) {
   }, [checkAuth]);
 
   const login = async (email, password) => {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
+    let res;
+    try {
+      res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+    } catch (err) {
+      throw new Error('Network error: Unable to contact the authentication server.');
+    }
 
-    const data = await res.json();
+    let data = {};
+    try {
+      const text = await res.text();
+      data = text ? JSON.parse(text) : {};
+    } catch (e) {
+      if (!res.ok) {
+        throw new Error(`Authentication server returned HTTP ${res.status}.`);
+      }
+      throw new Error('Invalid response received from authentication server.');
+    }
+
     if (!res.ok) {
-      throw new Error(data.error || 'Failed to authenticate');
+      throw new Error(data.error || `Authentication failed (HTTP ${res.status})`);
     }
 
     localStorage.setItem('admin_token', data.token);

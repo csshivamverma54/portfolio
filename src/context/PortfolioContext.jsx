@@ -16,7 +16,8 @@ export function PortfolioProvider({ children }) {
     try {
       const res = await fetch('/api/portfolio');
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-      const data = await res.json();
+      const text = await res.text();
+      const data = text ? JSON.parse(text) : {};
       setPortfolioData(data);
       setError(null);
     } catch (err) {

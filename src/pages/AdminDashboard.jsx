@@ -336,8 +336,13 @@ export default function AdminDashboard() {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || 'Failed to upload resume');
+        let errMessage = 'Failed to upload resume';
+        try {
+          const text = await res.text();
+          const data = text ? JSON.parse(text) : {};
+          if (data.error) errMessage = data.error;
+        } catch (e) {}
+        throw new Error(errMessage);
       }
 
       await refetchPortfolio();
