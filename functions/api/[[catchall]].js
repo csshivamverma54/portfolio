@@ -240,6 +240,16 @@ export async function onRequest(context) {
     });
   }
 
+  // If external backend is configured (e.g. Render / Railway / VPS), proxy all requests to it
+  if (env.BACKEND_URL) {
+    try {
+      const target = new URL(pathname + url.search, env.BACKEND_URL);
+      return await fetch(new Request(target, request));
+    } catch (e) {
+      console.warn('Backend proxy error:', e);
+    }
+  }
+
   const jwtSecret = env.JWT_SECRET || (env.ADMIN_PASSWORD ? `${env.ADMIN_PASSWORD}_secure_key` : 'portfolio_edge_jwt_secret');
 
   async function authenticate() {

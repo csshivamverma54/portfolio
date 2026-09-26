@@ -67,6 +67,16 @@ export async function onRequestOptions() {
 export async function onRequestPost(context) {
   const { request, env } = context;
 
+  if (env.BACKEND_URL) {
+    try {
+      const url = new URL(request.url);
+      const target = new URL(url.pathname + url.search, env.BACKEND_URL);
+      return await fetch(new Request(target, request));
+    } catch (e) {
+      console.warn('Backend proxy error:', e);
+    }
+  }
+
   let body = {};
   try {
     const text = await request.text();

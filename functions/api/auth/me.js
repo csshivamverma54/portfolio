@@ -67,6 +67,16 @@ export async function onRequestOptions() {
 
 export async function onRequestGet(context) {
   const { request, env } = context;
+
+  if (env.BACKEND_URL) {
+    try {
+      const url = new URL(request.url);
+      const target = new URL(url.pathname + url.search, env.BACKEND_URL);
+      return await fetch(new Request(target, request));
+    } catch (e) {
+      console.warn('Backend proxy error:', e);
+    }
+  }
   const authHeader = request.headers.get('Authorization') || '';
   const match = authHeader.match(/^Bearer\s+(.+)$/i);
   if (!match) {
