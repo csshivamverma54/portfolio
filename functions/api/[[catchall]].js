@@ -463,3 +463,10 @@ export async function onRequest(context) {
 
   return jsonResponse({ error: `Not found: ${method} ${pathname}` }, 404);
 }
+
+export async function onRequestGet(context) { return onRequest(context); }
+export async function onRequestPost(context) { return onRequest(context); }
+export async function onRequestPut(context) { return onRequest(context); }
+export async function onRequestDelete(context) { return onRequest(context); }
+export async function onRequestOptions(context) { return onRequest(context); }
+
